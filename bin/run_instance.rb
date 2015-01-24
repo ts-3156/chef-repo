@@ -86,8 +86,8 @@ begin
 
 ensure
   # clean up
-  [instance,
-   group,
-   key_pair].compact.each(&:delete)
+  #[instance,
+  # group,
+  # key_pair].compact.each(&:delete)
 end
 
