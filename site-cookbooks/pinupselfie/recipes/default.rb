@@ -1,8 +1,3 @@
-#
-# Cookbook Name:: pinupselfie
-# Recipe:: default
-#
-# Copyright 2015, YOUR_COMPANY_NAME
-#
-# All rights reserved - Do Not Redistribute
-#
+yum_package "httpd" do
+  action :install
+end
