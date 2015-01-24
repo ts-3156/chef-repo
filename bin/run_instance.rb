@@ -13,7 +13,7 @@
 
 require 'aws-sdk'
 require 'net/http'
-gem 'net-ssh', '~> 2.1.4'
+#gem 'net-ssh', '~> 2.1.4'
 require 'net/ssh'
 
 instance = key_pair = group = nil
@@ -22,7 +22,7 @@ begin
   ec2 = AWS::EC2.new
 
   # optionally switch to a non-default region
-  if region = ARGV.first
+  if region = ARGV.shift
     region = ec2.regions[region]
     unless region.exists?
       puts "Requested region '#{region.name}' does not exist.  Valid regions:"
@@ -33,6 +33,12 @@ begin
     # a region acts like the main EC2 interface
     ec2 = region
   end
+
+  prefix = 'ruby-sample-'
+  if _p = ARGV.shift
+    prefix = _p
+  end
+  time_now = Time.now.to_i
 
   # find the latest 32-bit EBS Amazon Linux AMI
   image = AWS.memoize do
@@ -47,19 +53,22 @@ begin
   puts "Using AMI: #{image.id}"
 
   # generate a key pair
-  key_pair = ec2.key_pairs.create("ruby-sample-#{Time.now.to_i}")
+  key_pair = ec2.key_pairs.create("#{prefix}#{time_now}")
   puts "Generated keypair #{key_pair.name}, fingerprint: #{key_pair.fingerprint}"
 
   # open SSH access
-  group = ec2.security_groups.create("ruby-sample-#{Time.now.to_i}")
+  group = ec2.security_groups.create("#{prefix}#{time_now}")
   group.authorize_ingress(:tcp, 22, "0.0.0.0/0")
   puts "Using security group: #{group.name}"
 
   # launch the instance
   instance = image.run_instance(:key_pair => key_pair,
-                                :security_groups => group)
+                                :security_groups => group,
+                                :instance_type => 't1.micro')
+  instance.tags.Name = "#{prefix}#{time_now}"
+
   sleep 10 while instance.status == :pending
-  puts "Launched instance #{instance.id}, status: #{instance.status}"
+  puts "Launched instance #{instance.id}, status: #{instance.status}, tags: #{instance.tags.to_h.inspect}"
 
   exit 1 unless instance.status == :running
 
