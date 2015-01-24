@@ -55,6 +55,7 @@ begin
   # generate a key pair
   key_pair = ec2.key_pairs.create("#{prefix}#{time_now}")
   puts "Generated keypair #{key_pair.name}, fingerprint: #{key_pair.fingerprint}"
+  puts key_pair.private_key
 
   # open SSH access
   group = ec2.security_groups.create("#{prefix}#{time_now}")
@@ -68,7 +69,7 @@ begin
   instance.tags.Name = "#{prefix}#{time_now}"
 
   sleep 10 while instance.status == :pending
-  puts "Launched instance #{instance.id}, status: #{instance.status}, tags: #{instance.tags.to_h.inspect}"
+  instance.tap{ |i| puts "Launched instance #{[i.id, i.status, i.tags.Name, i.dns_name].compact.join(', ')}" }
 
   exit 1 unless instance.status == :running
 
