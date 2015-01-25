@@ -11,20 +11,22 @@ dir_name = '/var/www/pinupselfie'
 git dir_name do
   repository "https://github.com/ts-3156/pinupselfie.git"
   revision "master"
-  # user "123"
-  # group "456"
+  user "root"
+  group "root"
   action :sync
 end
 
-gem_package "bundler" do
-  options("--no-ri --no-rdoc")
-  action :install
+execute "bundle install --path #{dir_name}/.bundle" do
+#execute "bundle install" do
+  cwd dir_name
+  not_if "cd #{dir_name} && bundle check"
+end
+
+execute "bundle exec ruby #{dir_name}/bin/update_photos.rb" do
+  cwd dir_name
 end
 
 cmds = [
-  # 'gem install bundler --no-ri --no-rdoc',
-  "cd #{dir_name} && bundle install --path .bundle",
-  "cd #{dir_name} && bundle exec ruby bin/update_photos.rb",
   "cp -rf #{dir_name}/public/assets #{dir_name}/public/index.html /var/www/html"
 ]
 

@@ -8,3 +8,8 @@ end
     action :install
   end
 end
+
+gem_package "bundler" do
+  options("--no-ri --no-rdoc")
+  action :install
+end
