@@ -1,0 +1,9 @@
+DEPENDENCIES
+  apache2
+
+GRAPH
+  apache2 (3.0.0)
+    iptables (>= 0.0.0)
+    logrotate (>= 0.0.0)
+  iptables (0.14.1)
+  logrotate (1.8.0)
