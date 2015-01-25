@@ -11,6 +11,9 @@
 # ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
+# Usage:
+# be ruby bin/register_instance_with_elb.rb ap-southeast-1 hello-test i-xxx123
+
 require 'aws-sdk'
 require 'net/http'
 #gem 'net-ssh', '~> 2.1.4'
