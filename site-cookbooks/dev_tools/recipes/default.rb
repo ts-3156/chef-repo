@@ -1,6 +1,7 @@
 cmd = 'yum groupinstall -y "Development Tools"'
 bash cmd do
   code cmd
+  not_if "yum list installed gcc"
 end
 
 %w(ruby-devel libxml2 libxslt git tree).each do |pkg|
