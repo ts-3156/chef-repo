@@ -4,7 +4,7 @@ bash cmd do
   not_if "yum list installed gcc"
 end
 
-%w(ruby-devel libxml2 libxslt git tree).each do |pkg|
+%w(ruby-devel libxml2-devel libxslt-devel sqlite-devel git tree dstat tmux).each do |pkg|
   package pkg do
     action :install
   end
