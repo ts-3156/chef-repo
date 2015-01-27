@@ -1,6 +1,9 @@
 {
+  "dir_name": "/var/www/pinupselfie",
   "run_list": [
     "dev_tools",
-    "pinupselfie"
+    "pinupselfie::nginx",
+    "pinupselfie::default",
+    "pinupselfie::unicorn"
   ]
 }

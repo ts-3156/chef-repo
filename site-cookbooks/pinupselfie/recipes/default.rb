@@ -1,18 +1,4 @@
-package "nginx" do
-  action :install
-end
-
-service "nginx" do
-  action [:enable, :start]
-end
-
-template '/etc/nginx/nginx.conf' do
-  owner 'root'
-  mode  0644
-  source 'nginx.conf.erb'
-end
-
-dir_name = '/var/www/pinupselfie'
+dir_name = node[:dir_name]
 
 git dir_name do
   repository "https://github.com/ts-3156/pinupselfie.git"
@@ -39,12 +25,3 @@ end
 # cmds.each do |cmd|
 #   bash(cmd) { code(cmd) }
 # end
-
-execute "bundle exec sh bin/stop_unicorn.sh" do
-  cwd dir_name
-  only_if { File.exists?("#{dir_name}/tmp/unicorn.pid") }
-end
-
-execute "bundle exec sh bin/start_unicorn.sh" do
-  cwd dir_name
-end
