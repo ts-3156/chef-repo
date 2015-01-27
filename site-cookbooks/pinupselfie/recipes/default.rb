@@ -1,14 +1,6 @@
-# package "httpd" do
-#   action :install
-# end
-
 package "nginx" do
   action :install
 end
-
-#service "httpd" do
-#  action [:enable, :start]
-#end
 
 service "nginx" do
   action [:enable, :start]
@@ -30,11 +22,11 @@ git dir_name do
   action :sync
 end
 
-# execute "bundle install --path #{dir_name}/.bundle" do
-# #execute "bundle install" do
-#   cwd dir_name
-#   not_if "cd #{dir_name} && bundle check"
-# end
+execute "bundle install --path #{dir_name}/.bundle" do
+#execute "bundle install" do
+  cwd dir_name
+  not_if "cd #{dir_name} && bundle check"
+end
 
 # execute "bundle exec ruby #{dir_name}/bin/update_photos.rb" do
 #   cwd dir_name
