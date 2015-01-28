@@ -8,10 +8,12 @@ git dir_name do
   action :sync
 end
 
-execute "bundle install --path #{dir_name}/.bundle" do
-#execute "bundle install" do
-  cwd dir_name
-  not_if "cd #{dir_name} && bundle check"
+if node[:run_bundle_install]
+  execute "bundle install --path #{dir_name}/.bundle" do
+  #execute "bundle install" do
+    cwd dir_name
+    not_if "cd #{dir_name} && bundle check"
+  end
 end
 
 execute "bundle exec whenever --update-cron" do
