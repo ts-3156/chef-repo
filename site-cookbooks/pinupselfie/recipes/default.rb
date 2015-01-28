@@ -14,6 +14,10 @@ execute "bundle install --path #{dir_name}/.bundle" do
   not_if "cd #{dir_name} && bundle check"
 end
 
+execute "bundle exec whenever --update-cron" do
+  cwd dir_name
+end
+
 # execute "bundle exec ruby #{dir_name}/bin/update_photos.rb" do
 #   cwd dir_name
 # end
