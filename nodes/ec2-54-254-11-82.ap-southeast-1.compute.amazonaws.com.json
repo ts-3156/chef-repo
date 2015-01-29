@@ -3,7 +3,7 @@
   "run_bundle_install": false,
   "run_list": [
     "dev_tools",
-    # "pinupselfie::newrelic",
+    // "pinupselfie::newrelic",
     "pinupselfie::nginx",
     "pinupselfie::default",
     "pinupselfie::unicorn"
